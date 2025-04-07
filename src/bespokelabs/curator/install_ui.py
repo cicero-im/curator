@@ -14,6 +14,7 @@ from rich.console import Console
 from rich.live import Live
 from rich.spinner import Spinner
 from rich.text import Text
+from security import safe_command
 
 
 class InstallationStage(Enum):
@@ -101,8 +102,7 @@ class PackageInstaller:
 
     def run_pip_install(self) -> subprocess.Popen:
         """Run pip install and capture output."""
-        return subprocess.Popen(
-            [sys.executable, "-m", "pip", "install", self.package_spec],
+        return safe_command.run(subprocess.Popen, [sys.executable, "-m", "pip", "install", self.package_spec],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
