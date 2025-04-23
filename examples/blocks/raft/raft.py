@@ -10,6 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from bespokelabs.curator.blocks.raft import Raft
 from examples.blocks.raft.utils import extract_text
+from security import safe_requests
 
 CHUNK_SIZE = int(os.environ.get("CHUNK_SIZE", 512))
 assert CHUNK_SIZE > 0
@@ -20,7 +21,7 @@ default_pdf_url = "https://arxiv.org/pdf/2503.03323.pdf"
 pdf_url = os.environ.get("PDF_URL", default_pdf_url)
 
 try:
-    response = requests.get(pdf_url, stream=True)
+    response = safe_requests.get(pdf_url, stream=True)
 except requests.exceptions.RequestException as e:
     print(f"Failed to download the pdf: {e}")
     exit(1)
