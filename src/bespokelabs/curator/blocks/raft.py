@@ -15,6 +15,7 @@ import datasets
 from pydantic import BaseModel, Field
 
 from bespokelabs import curator
+import secrets
 
 ChunkId = int
 Content = str
@@ -149,7 +150,7 @@ class _RaftAnswer(curator.LLM):
         available_indices = [i for i in range(chunk_count) if i != chunk_id]
 
         # Determine if oracle should be included
-        oracle_present = random.random() < self.p
+        oracle_present = secrets.SystemRandom().random() < self.p
 
         if oracle_present:
             # Include oracle document with distractors
@@ -162,7 +163,7 @@ class _RaftAnswer(curator.LLM):
             # Shuffle documents to randomize oracle position
             indices = list(range(len(documents)))
             pairs = list(zip(documents, indices))
-            random.shuffle(pairs)
+            secrets.SystemRandom().shuffle(pairs)
             documents, shuffled_indices = zip(*pairs) if pairs else ([], [])
             documents, shuffled_indices = list(documents), list(shuffled_indices)
 
@@ -172,7 +173,7 @@ class _RaftAnswer(curator.LLM):
             # Select distractors only (oracle + 1 to replace oracle)
             distractor_indices = self.sampler(available_indices, self.distractors + 1)
             documents = [self.chunks[idx]["content"] for idx in distractor_indices]
-            random.shuffle(documents)
+            secrets.SystemRandom().shuffle(documents)
             oracle_index = -1  # No oracle present
 
         return DocumentSet(documents=documents, oracle_index=oracle_index, oracle_present=oracle_present)

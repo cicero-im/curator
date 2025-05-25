@@ -9,7 +9,6 @@ It shows how to define a custom curator.LLM class for each generation step, and 
 import json
 import logging
 import os
-import random
 from datetime import datetime
 from typing import Dict, List
 
@@ -17,6 +16,7 @@ from datasets import Dataset
 from pydantic import BaseModel, Field
 
 from bespokelabs import curator
+import secrets
 
 # Set up logging
 logging.basicConfig(
@@ -288,7 +288,7 @@ def generate_math_concepts(num_concepts=10000, output_dir="math_concepts_dataset
         # Assign difficulty based on distribution
         difficulties = list(difficulty_distribution.keys())
         weights = list(difficulty_distribution.values())
-        target_difficulty = random.choices(difficulties, weights=weights, k=1)[0]
+        target_difficulty = secrets.SystemRandom().choices(difficulties, weights=weights, k=1)[0]
 
         # Set audience to high school only
         audience = "High School"
