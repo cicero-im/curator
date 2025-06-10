@@ -17,8 +17,8 @@ def count_lines(filename):
     Returns:
         int: The number of lines in the file.
     """
-    f = open(filename, "rb")
-    f_gen = _file_gen(f.raw.read)
+    with open(filename, "rb") as f:
+        f_gen = _file_gen(f.raw.read)
     return sum(buf.count(b"\n") for buf in f_gen)
 
 
