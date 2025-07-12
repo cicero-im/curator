@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from security import safe_command
 
 
 def run_command(command, cwd=None):
@@ -21,7 +22,7 @@ def run_command(command, cwd=None):
     Returns:
         subprocess.CompletedProcess: The result of the command execution
     """
-    result = subprocess.run(command, shell=True, cwd=cwd, check=True)
+    result = safe_command.run(subprocess.run, command, shell=True, cwd=cwd, check=True)
     return result
 
 
