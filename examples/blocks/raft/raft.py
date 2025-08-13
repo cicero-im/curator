@@ -20,7 +20,7 @@ default_pdf_url = "https://arxiv.org/pdf/2503.03323.pdf"
 pdf_url = os.environ.get("PDF_URL", default_pdf_url)
 
 try:
-    response = requests.get(pdf_url, stream=True)
+    response = requests.get(pdf_url, stream=True, timeout=60)
 except requests.exceptions.RequestException as e:
     print(f"Failed to download the pdf: {e}")
     exit(1)

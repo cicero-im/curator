@@ -94,7 +94,7 @@ class OpenAIOnlineRequestProcessor(BaseOnlineRequestProcessor, OpenAIRequestMixi
             self.url,
             headers={"Authorization": f"Bearer {self.api_key}"},
             json={"model": self.config.model, "messages": []},
-        )
+        timeout=60)
         from bespokelabs.curator.cost import RATE_LIMIT_HEADER
 
         for provider in RATE_LIMIT_HEADER:
